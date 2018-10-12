@@ -9,13 +9,12 @@ dependencies: # 包依赖 (使用其他包的资源)
     version: 0.1
     alias: accountb # 别名
 
-info: #包信息
-  version: 1.0 # 版本
-  title: 用户服务 #标题
-  description: 用户服务描述信息 #描述
+version: 1.0 # 版本
+title: 用户服务 #标题
+description: 用户服务描述信息 #描述
 
-schemas: # 数据定义
-  Sex: # 枚举
+enums: # 枚举定义
+  - name: Sex # 枚举
     title: 性别
     description: 用户性别只能是男或女?
     enums: # 枚举列表
@@ -25,7 +24,9 @@ schemas: # 数据定义
     - key: female
       value: 2
       title: 女
-  UserInfo: # 结构体
+
+structs: # 结构定义
+  - name: UserInfo # 结构体
     title: 用户信息
     props: # 属性列表
       - name: userName
@@ -41,13 +42,7 @@ schemas: # 数据定义
       - name: tags
         title: 用户标签列表
         type: StringList
-  UserInfoList: # 列表
-    title: 用户列表
-    list: UserInfo
-  StringList: #字符串列表
-    title: 字符串列表
-    list: String
-  LoginRequest:
+  - name: LoginRequest
     props:
       - field: userName
         checks:
@@ -59,6 +54,14 @@ schemas: # 数据定义
         title: 邮箱
         type: String
         format: email
+
+lists: # 列表定义
+  - name: UserInfoList # 列表
+    title: 用户列表
+    list: UserInfo
+  - name: StringList #字符串列表
+    title: 字符串列表
+    list: String
 
 fields: # 字段单独定义(资源复用)
   - name: userName

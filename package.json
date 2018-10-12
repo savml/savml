@@ -1,0 +1,23 @@
+{
+  "name": "savml",
+  "version": "2.0.6",
+  "description": "savml library",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/savml/savml.git"
+  },
+  "scripts": {
+    "sync": "node build.js sync"
+  },
+  "author": {
+    "name": "jetiny",
+    "email": "86287344@qq.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/savml/savml/issues"
+  },
+  "homepage": "https://github.com/savml/savml#readme",
+	"devDependencies": {
+	}
+}
