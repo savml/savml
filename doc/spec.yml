@@ -1,6 +1,9 @@
 contract: 0.1 # contract版本信息
 
 package: com.contract.service.user # 包名
+version: 1.0 # 版本
+title: 用户服务 # 标题
+description: 用户服务描述信息 # 描述
 
 dependencies: # 包依赖 (使用其他包的资源)
   - name: com.contract.service.a.account
@@ -9,15 +12,11 @@ dependencies: # 包依赖 (使用其他包的资源)
     version: 0.1
     alias: accountb # 别名
 
-version: 1.0 # 版本
-title: 用户服务 #标题
-description: 用户服务描述信息 #描述
-
 enums: # 枚举定义
-  - name: Sex # 枚举
+  - name: Sex
     title: 性别
     description: 用户性别只能是男或女?
-    enums: # 枚举列表
+    fields: # 枚举列表
     - key: male
       value: 1
       title: 男
@@ -25,25 +24,24 @@ enums: # 枚举定义
       value: 2
       title: 女
 
-structs: # 结构定义
-  - name: UserInfo # 结构体
+structs: # 数据定义
+  - name: UserInfo
     title: 用户信息
-    props: # 属性列表
+    fields: # 属性列表
       - name: userName
         title: 用户名
         type: String
-        required: true
         checks:
           - name: chars
       - name: sex
         title: 用户性别
         type: Sex
-        optional: false
+        optional: false # 直接验证器
       - name: tags
         title: 用户标签列表
-        type: StringList
+        type: <String>
   - name: LoginRequest
-    props:
+    fields:
       - field: userName
         checks:
           - name: chars
@@ -55,20 +53,18 @@ structs: # 结构定义
         type: String
         format: email
 
-lists: # 列表定义
-  - name: UserInfoList # 列表
-    title: 用户列表
-    list: UserInfo
-  - name: StringList #字符串列表
-    title: 字符串列表
-    list: String
-
-fields: # 字段单独定义(资源复用)
+fields: # 字段单独定义
   - name: userName
     title: 用户名
     type: String
 
-modules: # 模块定义
+validaters: # 定义验证器
+  - name: password
+    type: String
+    title: 密码格式
+    regexp: /\d+/
+
+services: # 服务定义
   - name: Account
     title: 账户服务
     auth: true
@@ -76,7 +72,7 @@ modules: # 模块定义
     title: 授权服务
     method: POST # 默认的请求方法
 
-services: # 服务定义
+actions: # 服务定义
   - name: Login
     module: Account
     auth: false
@@ -85,3 +81,12 @@ services: # 服务定义
     path: account/:login
     request: LoginRequest
     response: accountb.LoginResponse
+
+pages: # 定义页面
+  - name: Home
+    title: Home
+
+views: # 定义视图
+  - name: About
+    title: About
+    path: /about
