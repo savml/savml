@@ -6,11 +6,11 @@ title: 用户服务 # 标题
 description: 用户服务描述信息 # 描述
 
 dependencies: # 包依赖 (使用其他包的资源)
-  - name: com.contract.service.a.account
+  - package: com.contract.service.a.account
     version: 0.1
-  - name: com.contract.service.b.account
+  - package: com.contract.service.b.account
     version: 0.1
-    alias: accountb # 别名
+    name: accountb # 别名
 
 enums: # 枚举定义
   - name: Sex

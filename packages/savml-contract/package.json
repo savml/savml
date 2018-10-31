@@ -1,0 +1,52 @@
+{
+  "name": "savml-contract",
+  "version": "0.0.1",
+  "description": "the contract for savml",
+  "main": "index.js",
+  "scripts": {
+    "t": "npm run lint && npm run build && npm run test",
+    "lint": "standard src/** test/**",
+    "build": "rollup -c script/build.js",
+    "test": "nyc ava"
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "ignore": [
+      "script",
+      "dist"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "node_modules",
+      "test"
+    ]
+  },
+  "ava": {
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "babel": {
+    "plugins": [
+      "transform-es2015-modules-commonjs",
+      "transform-object-rest-spread"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/savml/savml.git"
+  },
+  "author": "jetiny",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/savml/savml/issues"
+  },
+  "homepage": "https://github.com/savml/savml#readme",
+  "devDependencies": {
+    "@types/yaml": "^1.0.0",
+    "rollup-plugin-typescript2": "^0.17.2",
+    "yaml": "^1.0.0"
+  }
+}
