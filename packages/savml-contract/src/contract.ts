@@ -19,7 +19,7 @@ interface Enum {
   fields: Array<EnumItem>; // fields
 }
 
-interface Validater {
+interface Validator {
   name: string; // name
   title: string; // display name
   args: Array<any>; // arguments
@@ -48,6 +48,42 @@ interface Struct {
   fields: Array<Field>; // fields
 }
 
+enum Method {
+  GET = "GET",
+  POST = "POST",
+  DELETE = "DELETE",
+  PATCH = "PATCH",
+  HEAD = "HEAD",
+}
+
+interface Service {
+  name: string; // name
+  title: string; // display name
+  description: string; // info
+  path: string | undefined; // path of service
+  auth: boolean | undefined; // authable
+  method: Method | undefined; // method
+}
+
+interface Action {
+  name: string; // name
+  title: string; // display name
+  description: string; // info
+  path: string; // path of action
+  service: string; // service name
+  auth: boolean; // authable
+  method: Method; // method
+  request: string;
+  response: string;
+}
+
+interface Page {
+  name: string; // name
+  title: string; // display name
+  description: string; // info
+  path: string; // path of page
+}
+
 interface Contract {
   contract: string; // required 1.0
   package: string; // required com.savml.package
@@ -59,15 +95,23 @@ interface Contract {
   dependencies: Array<Dependency>; // package dependencies
   enums: Array<Enum>; // enum types
   structs: Array<Struct>; // struct types
-  validaters: Array<Validater>; // validaters
+  validators: Array<Validator>; // validators
+  services: Array<Service>;
+  actions: Array<Action>;
+  pages: Array<Page>;
 }
 
 export {
   EnumItem,
   Enum,
-  Validater,
+  Validator,
+  Check,
   Field,
   Struct,
+  Method,
+  Service,
+  Action,
+  Page,
   Dependency,
   Contract,
 }

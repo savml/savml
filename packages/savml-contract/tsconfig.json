@@ -10,7 +10,7 @@
     "diagnostics": true,
     "listFiles": true,
     "pretty": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "noEmitOnError": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,

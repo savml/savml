@@ -45,6 +45,7 @@
   },
   "homepage": "https://github.com/savml/savml#readme",
   "devDependencies": {
+    "@types/node": "^10.12.2",
     "@types/yaml": "^1.0.0",
     "rollup-plugin-typescript2": "^0.17.2",
     "yaml": "^1.0.0"

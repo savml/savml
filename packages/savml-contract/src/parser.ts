@@ -1,6 +1,6 @@
 
 import {Contract} from './contract'
 
-export function parser (text: string): Contract {
+export function parse (text: string): Contract {
   return JSON.parse(text)
 }

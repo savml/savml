@@ -1,7 +1,9 @@
-import {parser} from './parser'
+import {parse} from './parser'
 import {validator} from './validator'
+import {FileLoader} from './fileLoader'
+import { Contract } from './contract';
 
-export {parser, validator}
+export {parse, validator}
 
 let out = {
   "contract": "1.0",
@@ -47,3 +49,9 @@ let out = {
 }
 
 validator(out)
+
+let loader = new FileLoader()
+
+loader.fetch('../../../doc/spec.yml').then((res: Contract) => {
+  console.log(res)
+})
