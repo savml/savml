@@ -1,5 +1,5 @@
 
-export function mapExt(ext: string) : string | undefined {
+export function mapExt (ext: string) : string | undefined {
   switch (ext) {
     case '.json':
       return 'json'
@@ -7,14 +7,13 @@ export function mapExt(ext: string) : string | undefined {
     case '.yaml':
       return 'yml'
     default:
-      return
   }
 }
 
-export function isBoolean(val: any) {
+export function isBoolean (val: any) {
   return typeof val === 'boolean'
 }
 
-export function isString(val: any) {
+export function isString (val: any) {
   return typeof val === 'string'
 }

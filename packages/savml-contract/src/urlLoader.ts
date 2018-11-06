@@ -1,6 +1,6 @@
-import {Loader} from './loader'
-import {Contract} from './contract'
-import {parse} from './parser'
+import { Loader } from './loader'
+import { Contract } from './contract'
+import { parse } from './parser'
 import yaml from 'yaml'
 import fetch from 'node-fetch'
 
@@ -11,23 +11,25 @@ export class UrlLoader implements Loader {
       this.registries = registries
     }
   }
-  resolve(packageName: string, version?:string) : Promise<string> {
+  resolve (packageName: string, version?:string) : Promise<string> {
     let registries = this.registries
-    if (version) {
-      packageName = `${packageName}/${version}`
-    }
-    return registries.reduce((res:Promise<string>, config) => {
+    packageName = `${packageName}/${version || 'latest'}`
+    return registries.reduce((res:Promise<string>, config: any) => {
       return res.then(val => {
         if (val) {
           return val
         }
-        return fetch(config.url, config).then(r => {
-          
+        val = `${config.url}/${packageName}`
+        return fetch(val, config).then(r => {
+          if (r.status === 200) {
+            return val
+          }
+          return ''
         })
       })
-    }, Promise.resolve(""))
+    }, Promise.resolve(''))
   }
-  fetch(url: string, options?: object): Promise<Contract> {
+  fetch (url: string, options?: object): Promise<Contract> {
     return fetch(url, Object.assign({
       method: 'GET'
     }, options)).then(r => {

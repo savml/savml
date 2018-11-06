@@ -49,11 +49,11 @@ interface Struct {
 }
 
 enum Method {
-  GET = "GET",
-  POST = "POST",
-  DELETE = "DELETE",
-  PATCH = "PATCH",
-  HEAD = "HEAD",
+  GET = 'GET',
+  POST = 'POST',
+  DELETE = 'DELETE',
+  PATCH = 'PATCH',
+  HEAD = 'HEAD',
 }
 
 interface Service {
@@ -113,5 +113,5 @@ export {
   Action,
   Page,
   Dependency,
-  Contract,
+  Contract
 }
