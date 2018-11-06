@@ -1,7 +1,7 @@
 {
-  "name": "savml-contract",
+  "name": "savml-cli",
   "version": "0.0.1",
-  "description": "the contract for savml",
+  "description": "the cli for savml",
   "main": "index.js",
   "scripts": {
     "t": "npm run lint && npm run build && npm run test",
@@ -46,9 +46,7 @@
   "homepage": "https://github.com/savml/savml#readme",
   "devDependencies": {
     "@types/node": "^10.12.2",
-    "@types/node-fetch": "^2.1.2",
     "@types/yaml": "^1.0.0",
-    "node-fetch": "^2.2.1",
     "rollup-plugin-typescript2": "^0.17.2",
     "yaml": "^1.0.0"
   }

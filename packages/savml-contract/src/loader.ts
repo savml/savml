@@ -1,5 +1,6 @@
 import {Contract} from './contract'
 
 export interface Loader {
-  fetch(url: string) : Promise<Contract>;
+  resolve(packageName: string, version?:string) : Promise<string>;
+  fetch(url: string, options?: object) : Promise<Contract>;
 }

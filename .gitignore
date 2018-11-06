@@ -59,6 +59,7 @@ typings/
 
 # next.js build output
 .next
-/packages/savml-contract/.rpt2_cache
+.rpt2_cache
 dist
-/packages/savml-contract/package-lock.json
+package-lock.json
+.idea

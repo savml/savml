@@ -2,8 +2,6 @@ import {parse} from './parser'
 import {validator} from './validator'
 import {FileLoader} from './fileLoader'
 import { Contract } from './contract';
-import { Loader } from './loader';
-import { UrlLoader } from './urlLoader';
 
 export {parse, validator}
 
@@ -52,19 +50,8 @@ let out = {
 
 validator(out)
 
-let loader: Loader = new FileLoader([
-  "../../../doc"
-])
+let loader = new FileLoader()
 
-loader.resolve("spec").then(url => {
-  console.log(url)
-  loader.fetch(url, undefined).then((res: Contract) => {
-    console.log(res)
-  })
-})
-
-
-loader = new UrlLoader()
-loader.fetch("http://localhost:8080/doc/spec.yml", undefined).then((res: Contract) => {
+loader.fetch('../../../doc/spec.yml').then((res: Contract) => {
   console.log(res)
 })
