@@ -23,7 +23,7 @@ export default [{
 function createPlugins () {
   return [
     typescript({
-      
+      clean: true,
     }),
     json(),
     resolve({

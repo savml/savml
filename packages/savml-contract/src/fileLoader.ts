@@ -33,7 +33,7 @@ export class FileLoader implements Loader {
           return resolve(absoultePath)
         })
       } else {
-        let paths: Array<string> = this.paths.splice(0)
+        let paths: Array<string> = this.paths.slice(0)
         paths.unshift('.')
         let guessFormat = !mapExt(path.extname(packageName))
         return paths.reduce((ret, dir) => { // 目录递归
@@ -43,9 +43,9 @@ export class FileLoader implements Loader {
             }
             let absoultePaths:Array<string> = []
             if (guessFormat) {
-              absoultePaths.push(path.join(dir, packageName), '.json')
-              absoultePaths.push(path.join(dir, packageName), '.yml')
-              absoultePaths.push(path.join(dir, packageName), '.yaml')
+              absoultePaths.push(path.join(dir, packageName + '.json'))
+              absoultePaths.push(path.join(dir, packageName + '.yml'))
+              absoultePaths.push(path.join(dir, packageName + '.yaml'))
             } else {
               absoultePaths.push(path.join(dir, packageName))
             }
@@ -60,7 +60,7 @@ export class FileLoader implements Loader {
               })
             }, Promise.resolve(''))
           })
-        }, Promise.resolve(''))
+        }, Promise.resolve('')).then(resolve)
       }
     })
   }

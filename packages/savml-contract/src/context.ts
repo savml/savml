@@ -41,6 +41,7 @@ export class ContextLoader {
         if (path) {
           return iter.loader.fetch(path, iter.options)
         }
+        return
       })
     }, Promise.resolve())
     if (contract) {

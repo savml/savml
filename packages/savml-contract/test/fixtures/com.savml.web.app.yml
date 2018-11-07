@@ -2,3 +2,8 @@ contract: 0.1
 package: com.savml.web.app
 version: 1.0
 title: WebApp
+dependencies:
+  - package: com.savml.service.account
+    version: 1.0
+  - package: com.savml.service.auth
+    version: 1.0

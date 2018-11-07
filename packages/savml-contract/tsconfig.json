@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "target": "es6",
+    "module": "ESNext",
+    "target": "esnext",
     "noImplicitAny": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "noImplicitThis": true,
     "diagnostics": true,
-    "listFiles": true,
+    "listFiles": false,
     "pretty": true,
     "moduleResolution": "Node",
     "noEmitOnError": false,

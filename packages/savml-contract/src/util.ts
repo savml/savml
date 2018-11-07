@@ -7,6 +7,7 @@ export function mapExt (ext: string) : string | undefined {
     case '.yaml':
       return 'yml'
     default:
+      return
   }
 }
 
