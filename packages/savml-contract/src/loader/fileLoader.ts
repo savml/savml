@@ -1,10 +1,10 @@
-import { Loader } from './loader'
-import { Contract } from './contract'
+import { Loader } from '../contract/loader'
+import { Contract } from '../contract/contract'
 import path from 'path'
 import fs from 'fs'
 import { parse } from './parser'
 import yaml from 'yaml'
-import { mapExt } from './util'
+import { mapExt } from '../utils/util'
 
 export class FileLoader implements Loader {
   private paths: Array<string> = []

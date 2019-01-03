@@ -1,17 +1,12 @@
-import { Loader } from './loader'
-import { Contract } from './contract'
+import { Loader } from '../contract/loader'
+import { Contract, ContractContext } from '../contract/contract'
 
 interface LoaderContext {
   loader: Loader,
   options: object | undefined
 }
 
-export interface ContractContext {
-  contract: Contract
-  deps: Array<ContractContext>
-}
-
-export class ContextLoader {
+export class ContractLoader {
   private loaders: Array<LoaderContext> = []
   private contexts: { [key: string]: {[key: string]:ContractContext}; } = {}
   constructor () {

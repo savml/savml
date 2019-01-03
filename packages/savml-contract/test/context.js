@@ -5,7 +5,7 @@ import {ContextLoader, FileLoader} from '../dist'
 test(async t => {
 	let ctxLoader = new ContextLoader()
 	let fileLoader = new FileLoader([
-		__dirname + '/fixtures'
+		__dirname + '/fixtures/contract'
 	])
 	ctxLoader.addLoader(fileLoader)
 	let res = await ctxLoader.fetch("com.savml.service.account")

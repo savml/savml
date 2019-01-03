@@ -101,6 +101,11 @@ interface Contract {
   pages: Array<Page>;
 }
 
+interface ContractContext {
+  contract: Contract
+  deps: Array<ContractContext>
+}
+
 export {
   EnumItem,
   Enum,
@@ -113,5 +118,6 @@ export {
   Action,
   Page,
   Dependency,
-  Contract
+  Contract,
+  ContractContext
 }

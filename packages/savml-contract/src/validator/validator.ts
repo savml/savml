@@ -1,5 +1,5 @@
-import { Contract } from './contract'
-import { isString, isBoolean } from './util'
+import { Contract } from '../contract/contract'
+import { isString, isBoolean } from '../utils/util'
 
 export function isEnumKeyValue (val: any) {
   let tval = typeof val
