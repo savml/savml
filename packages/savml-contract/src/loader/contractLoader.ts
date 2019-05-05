@@ -1,5 +1,6 @@
 import { Loader } from '../contract/loader'
-import { Contract, ContractContext } from '../contract/contract'
+import { Contract, ContractContext, Dependencies } from '../contract/contract'
+import { TContractContext } from './contractContext';
 
 interface LoaderContext {
   loader: Loader,
@@ -46,14 +47,16 @@ export class ContractLoader {
       })
     }, Promise.resolve())
     if (contract) {
-      let res : ContractContext = {
-        contract,
-        deps: []
+      let deps : Array<ContractContext> = []
+      let dependencies = contract.dependencies
+      if (dependencies) {
+        deps = await Promise.all(
+          Object.keys(dependencies).map((name) => this.fetch(
+            (<Dependencies>dependencies)[name].package, (<Dependencies>dependencies)[name].version))
+        )
       }
+      let res : ContractContext = new TContractContext(contract, deps)
       ctxs[contract.version] = res
-      if (contract.dependencies) {
-        res.deps = await Promise.all(contract.dependencies.map(it => this.fetch(it.package, it.version)))
-      }
       return res
     }
     throw new Error(`can not fetch ${packageName} ${version || ''}`)

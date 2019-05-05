@@ -1,25 +1,33 @@
 
-interface Dependency {
+export interface Dependency {
   package: string; // package name , eg: com.savml.package.a
   version: string; // package version, eg: 1.0
   name?: string; // alias name
 }
 
-interface EnumItem {
+export interface Dependencies {
+  [key: string] : Dependency
+}
+
+export interface Enum {
   key: string; // key
   value: string | number | boolean; // value
   title?: string; // display name
   description?: string; // info
 }
 
-interface Validator {
+export interface Validator {
   name: string; // validater name
   args?: Array<any>; // arguments
   title?: string; // display name
   error?: string; // display error
 }
 
-interface FieldItem {
+export interface Validators {
+  [key: string]: Validator
+}
+
+export interface Field {
   name: string; // name
   title?: string; // display name
   description?: string; // info
@@ -29,15 +37,19 @@ interface FieldItem {
   validators?: Array<Validator|string>; // validater check rulls
 }
 
-interface Struct {
-  name: string; // name
+export interface Struct {
+  name?: string; // name
   title?: string; // display name
   description?: string; // info
-  fields?: Array<FieldItem>; // fields
-  emums?: Array<EnumItem>; // enums
+  fields?: Array<Field>; // fields
+  enums?: Array<Enum>; // enums
 }
 
-enum Method {
+export interface Structs {
+  [key: string] : Struct
+}
+
+export enum Method {
   GET = 'GET',
   POST = 'POST',
   DELETE = 'DELETE',
@@ -45,18 +57,31 @@ enum Method {
   HEAD = 'HEAD',
 }
 
-interface Service {
-  name: string; // name
+export interface View {
+  name?: string; // name
   title?: string; // display name
   description?: string; // info
-  path?: string; // path of service
-  auth?: boolean; // authable
-  method?: Method; // method
-  actions: Array<Action>; // actions
+  path?: string; // path of view
 }
 
-interface Action {
-  name: string; // name
+export interface Views {
+  [key:string] : View
+}
+
+export interface Pages {
+  [key:string] : Page
+}
+
+export interface Page {
+  name?: string; // name
+  title?: string; // display name
+  description?: string; // info
+  path?: string; // path of page
+  views?: Views; // views
+}
+
+export interface Action {
+  name?: string; // name
   title?: string; // display name
   description?: string; // info
   path?: string; // path of action
@@ -66,22 +91,25 @@ interface Action {
   response?: Struct | string;
 }
 
-interface Page {
-  name: string; // name
-  title?: string; // display name
-  description?: string; // info
-  path?: string; // path of page
-  views: Array<View>; // views
+export interface Actions {
+  [key: string] : Action
 }
 
-interface View {
-  name: string; // name
+export interface Service {
+  name?: string; // name
   title?: string; // display name
   description?: string; // info
-  path?: string; // path of view
+  path?: string; // path of service
+  auth?: boolean; // authable
+  method?: Method; // method
+  actions?: Actions; // actions
 }
 
-interface Contract {
+export interface Services {
+  [key: string] : Service
+}
+
+export interface Contract {
   contract: string; // required 1.0
   package: string; // required com.savml.package
   version: string; // required 1.0
@@ -89,29 +117,16 @@ interface Contract {
   lang?: string; // current language, eg: en
   title?: string; // required display name
   description?: string; // info
-  dependencies?: Array<Dependency>; // package dependencies
-  structs?: Array<Struct>; // struct types
-  validators?: Array<Validator>; // validators
-  services?: Array<Service>;
-  pages?: Array<Page>;
+  dependencies?: Dependencies; // package dependencies
+  structs?: Structs; // struct types
+  validators?: Validators; // validators
+  services?: Services;
+  pages?: Pages;
 }
 
-interface ContractContext {
+export interface ContractContext {
   contract: Contract
   deps: Array<ContractContext>
-}
-
-export {
-  Validator,
-  EnumItem,
-  FieldItem,
-  Struct,
-  Method,
-  Service,
-  Action,
-  Page,
-  View,
-  Dependency,
-  Contract,
-  ContractContext
+  walkPages (walker: (page: Page, ctx: ContractContext) => any) : any[];
+  walkViews (walker: (view: View, page: Page, ctx: ContractContext) => any) : any[];
 }

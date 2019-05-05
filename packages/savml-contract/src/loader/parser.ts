@@ -1,5 +1,5 @@
 import { Contract } from '../contract/contract'
-import yaml from 'yaml'
+import {parse as yamlParse} from 'yaml'
 
 // @TODO 验证器
 export function parse (text: string, format?: string): Contract {
@@ -10,7 +10,7 @@ export function parse (text: string, format?: string): Contract {
       contract = JSON.parse(text)
       break
     case 'yml':
-      contract = yaml.parse(text)
+      contract = yamlParse(text)
       break
     default:
       throw Error("can not parse contract")

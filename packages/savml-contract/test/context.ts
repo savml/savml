@@ -3,8 +3,10 @@ import test from 'ava'
 import {ContractLoader} from '../src/loader/contractLoader'
 import {FileLoader} from '../src/loader/fileLoader'
 import {MemLoader} from '../src/loader/memLoader'
+import {ContractWriter} from '../src/writer/contractWriter'
+import { VueRouteWriter } from "../src/writer/vueRouteWriter";
 
-import {Contract, Dependency, Page, View, Service, Method, Struct} from '../src/contract/contract'
+import {Contract, Dependency, Page, View, Service, Method, Struct, Action, Field, Validator, ContractContext} from '../src/contract/contract'
 
 test('file loader should work', async t => {
 	let ctxLoader = new ContractLoader()
@@ -26,33 +28,40 @@ test('mem loader should work', async t => {
 		contract = '1.0'
 		package = 'com.savml.mem'
 		version = '1.0'
-		dependencies = <[Dependency]> [
-			<Dependency>{
+		dependencies = {
+			mem2: <Dependency>{
 				package: "com.savml.mem2",
 				version: "1.0.1"
 			}
-		]
-		pages = <[Page]>[
-			{
-				name: "Account",
-				views: <[View]>[
-					<View>{
-						name: "Login",
+		}
+		pages = {
+			Account: <Page>{
+				views: {
+					Login: <View>{},
+					Register: <View>{},
+				}
+			}
+		}
+		services = {
+			Auth: <Service>{
+				method: Method.GET,
+				actions: {
+					Login: <Action>{},
+				}
+			}
+		}
+		structs = {
+			UserInfo: <Struct>{
+				fields: <[Field]>[
+					{
+						name: "email",
+						validators: <[Validator]>[
+							{ name: "isEmail", error: "不是邮箱格式"}
+						],
 					}
-				],
+				]
 			}
-		]
-		services = <[Service]> [
-			{
-				name: "Auth",
-				method: Method.GET
-			}
-		]
-		structs = <[Struct]>[
-			<Struct>{
-				name: "UserInfo"
-			}
-		]
+		}
 	}
 	class Mem2Contract implements Contract {
 		contract = "1.0"
@@ -66,4 +75,33 @@ test('mem loader should work', async t => {
 	t.is(typeof res, "object")
 	t.is(res.deps.length > 0, true)
 
+})
+
+test('vue route writer should work', async t => {
+	class MemContract implements Contract {
+		contract = '1.0'
+		package = 'com.savml.mem'
+		version = '1.0'
+		pages = {
+			Account: <Page>{
+				views: {
+					Login: <View>{
+						path: 'signin'
+					},
+					Register: <View>{},
+				}
+			}
+		}
+	}
+	let ctxLoader = new ContractLoader()
+	ctxLoader.addLoader(new MemLoader([new MemContract]))
+	
+	let ctx : ContractContext = await ctxLoader.fetch("com.savml.mem")
+	
+	let writer = new ContractWriter()
+	writer.addWriter(VueRouteWriter)
+
+	let res = await writer.flush(ctx)
+	t.is(res.length > 0, true)
+	t.pass()
 })
