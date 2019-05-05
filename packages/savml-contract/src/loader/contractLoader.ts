@@ -32,9 +32,15 @@ export class ContractLoader {
         if (val) {
           return val
         }
-        let path = await iter.loader.resolve(packageName, version)
-        if (path) {
-          return iter.loader.fetch(path, iter.options)
+        let filePath
+        try {
+          filePath = await iter.loader.resolve(packageName, version)
+        } catch(err) {
+          console.log(err)
+          //@TODO log error
+        }
+        if (filePath) {
+          return iter.loader.fetch(filePath, iter.options)
         }
         return
       })

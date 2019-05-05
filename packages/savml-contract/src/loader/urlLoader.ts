@@ -1,7 +1,6 @@
 import { Loader } from '../contract/loader'
 import { Contract } from '../contract/contract'
 import { parse } from './parser'
-import yaml from 'yaml'
 import fetch from 'node-fetch'
 
 export class UrlLoader implements Loader {
@@ -33,12 +32,7 @@ export class UrlLoader implements Loader {
     return fetch(url, Object.assign({
       method: 'GET'
     }, options)).then(r => {
-      return r.text().then(body => {
-        if (body[0] === '{') {
-          return parse(body)
-        }
-        return yaml.parse(body)
-      })
+      return r.text().then(parse)
     })
   }
 }

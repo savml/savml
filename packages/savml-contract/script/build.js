@@ -5,6 +5,8 @@ import re from 'rollup-plugin-re'
 import uglify from 'rollup-plugin-uglify'
 import json from 'rollup-plugin-json'
 import typescript from 'rollup-plugin-typescript2'
+import builtins  from 'rollup-plugin-node-builtins'
+import globals from 'rollup-plugin-node-globals';
 
 export default [{
   input: 'src/index.ts',
@@ -12,10 +14,7 @@ export default [{
     {format: 'umd', name:'SavmlContract', file: 'dist/savml-contract.umd.js'},
   ],
   external: [
-    "yaml",
-    "fs",
-    "path",
-    "request",
+    'punycode'
   ],
   plugins: createPlugins()
 }]
@@ -27,13 +26,18 @@ function createPlugins () {
     }),
     json(),
     resolve({
-      module: true
+      jsnext: true,
+      module: true,
+      main: true,
     }),
+    globals(),
+    builtins(),
     commonjs({
       include: [
         'node_modules/**',
         process.env.ENTRYMODULE + '/**',
       ]
     }),
+
   ]  
 }

@@ -6,7 +6,7 @@ export enum Sex {
   male = 1,
   /** 性别: 女
    * 雌性高等动物 */
-  female =2
+  female =2,
 }
 
 /** 用户信息 */

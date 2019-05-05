@@ -2,50 +2,39 @@
 interface Dependency {
   package: string; // package name , eg: com.savml.package.a
   version: string; // package version, eg: 1.0
-  name: string; // alias name
+  name?: string; // alias name
 }
 
 interface EnumItem {
-  key: string | number | boolean; // key
+  key: string; // key
   value: string | number | boolean; // value
-  title: string; // display name
-  description: string; // info
-}
-
-interface Enum {
-  name: string; // enum name
-  title: string; // display name
-  description: string; // info
-  fields: Array<EnumItem>; // fields
+  title?: string; // display name
+  description?: string; // info
 }
 
 interface Validator {
-  name: string; // name
-  title: string; // display name
-  args: Array<any>; // arguments
-}
-
-interface Check {
   name: string; // validater name
-  title: string; // display name
-  args: Array<any>; // arguments
+  args?: Array<any>; // arguments
+  title?: string; // display name
+  error?: string; // display error
 }
 
-interface Field {
+interface FieldItem {
   name: string; // name
-  title: string; // display name
-  description: string; // info
-  type: string; // data type
-  field: string; // name of reference field
-  optional: boolean; // optional
-  checks: Array<Check>; // validater check rulls
+  title?: string; // display name
+  description?: string; // info
+  type?: string; // data type
+  field?: string; // name of reference field
+  optional?: boolean; // optional
+  validators?: Array<Validator|string>; // validater check rulls
 }
 
 interface Struct {
   name: string; // name
-  title: string; // display name
-  description: string; // info
-  fields: Array<Field>; // fields
+  title?: string; // display name
+  description?: string; // info
+  fields?: Array<FieldItem>; // fields
+  emums?: Array<EnumItem>; // enums
 }
 
 enum Method {
@@ -58,47 +47,53 @@ enum Method {
 
 interface Service {
   name: string; // name
-  title: string; // display name
-  description: string; // info
-  path: string | undefined; // path of service
-  auth: boolean | undefined; // authable
-  method: Method | undefined; // method
+  title?: string; // display name
+  description?: string; // info
+  path?: string; // path of service
+  auth?: boolean; // authable
+  method?: Method; // method
+  actions: Array<Action>; // actions
 }
 
 interface Action {
   name: string; // name
-  title: string; // display name
-  description: string; // info
-  path: string; // path of action
-  service: string; // service name
-  auth: boolean; // authable
-  method: Method; // method
-  request: string;
-  response: string;
+  title?: string; // display name
+  description?: string; // info
+  path?: string; // path of action
+  auth?: boolean; // authable
+  method?: Method; // method
+  request?: Struct | string;
+  response?: Struct | string;
 }
 
 interface Page {
   name: string; // name
-  title: string; // display name
-  description: string; // info
-  path: string; // path of page
+  title?: string; // display name
+  description?: string; // info
+  path?: string; // path of page
+  views: Array<View>; // views
+}
+
+interface View {
+  name: string; // name
+  title?: string; // display name
+  description?: string; // info
+  path?: string; // path of view
 }
 
 interface Contract {
   contract: string; // required 1.0
   package: string; // required com.savml.package
   version: string; // required 1.0
-  defaultLang: string; // required default language , eg: en
-  lang: string; // current language, eg: en
-  title: string; // required display name
-  description: string; // info
-  dependencies: Array<Dependency>; // package dependencies
-  enums: Array<Enum>; // enum types
-  structs: Array<Struct>; // struct types
-  validators: Array<Validator>; // validators
-  services: Array<Service>;
-  actions: Array<Action>;
-  pages: Array<Page>;
+  defaultLang?: string; // required default language , eg: en
+  lang?: string; // current language, eg: en
+  title?: string; // required display name
+  description?: string; // info
+  dependencies?: Array<Dependency>; // package dependencies
+  structs?: Array<Struct>; // struct types
+  validators?: Array<Validator>; // validators
+  services?: Array<Service>;
+  pages?: Array<Page>;
 }
 
 interface ContractContext {
@@ -107,16 +102,15 @@ interface ContractContext {
 }
 
 export {
-  EnumItem,
-  Enum,
   Validator,
-  Check,
-  Field,
+  EnumItem,
+  FieldItem,
   Struct,
   Method,
   Service,
   Action,
   Page,
+  View,
   Dependency,
   Contract,
   ContractContext

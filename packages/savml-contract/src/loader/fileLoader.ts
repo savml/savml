@@ -1,9 +1,10 @@
 import { Loader } from '../contract/loader'
 import { Contract } from '../contract/contract'
-import path from 'path'
-import fs from 'fs'
+const path = require('path')
+const fs = require('fs')
+// import path from 'path'
+// import fs from 'fs'
 import { parse } from './parser'
-import yaml from 'yaml'
 import { mapExt } from '../utils/util'
 
 export class FileLoader implements Loader {
@@ -26,7 +27,7 @@ export class FileLoader implements Loader {
         absoultePath = packageName
       }
       if (absoultePath) {
-        fs.access(absoultePath, (err) => {
+        fs.access(absoultePath, (err: any) => {
           if (err) {
             return reject(err)
           }
@@ -55,7 +56,7 @@ export class FileLoader implements Loader {
                   return val2
                 }
                 return new Promise<string>((resolve) => {
-                  fs.access(file, (err) => resolve(err ? '' : file))
+                  fs.access(file, (err: any) => resolve(err ? '' : file))
                 })
               })
             }, Promise.resolve(''))
@@ -70,17 +71,13 @@ export class FileLoader implements Loader {
       if (!ext) {
         return reject(new Error(`unknown file type: ${url}`))
       }
-      fs.readFile(url, (err, data: Buffer) => {
+      fs.readFile(url, (err: any, data: Buffer) => {
         if (err) {
           return reject(err)
         }
         let ret
         try {
-          if (ext === 'yml') {
-            ret = yaml.parse(data.toString())
-          } else {
-            ret = parse(data.toString())
-          }
+          ret = parse(data.toString(), ext)
         } catch (err) {
           return reject(err)
         }

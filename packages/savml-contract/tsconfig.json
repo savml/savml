@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "module": "ESNext",
+    "module": "commonjs",
     "target": "esnext",
     "noImplicitAny": true,
     "sourceMap": false,
@@ -21,7 +21,8 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "node_modules/tdash/src/*.ts"
   ],
   "exclude": []
 }
