@@ -1,5 +1,4 @@
-import { Loader } from '../contract/loader'
-import { Contract } from '../contract/contract'
+import { Contract, Loader } from '../contract/contract'
 
 export class MemLoader implements Loader {
   private contracts: Array<Contract> = []

@@ -14,7 +14,8 @@ export default [{
     {format: 'umd', name:'SavmlContract', file: 'dist/savml-contract.umd.js'},
   ],
   external: [
-    'punycode'
+    'punycode',
+    'yaml'
   ],
   plugins: createPlugins()
 }]
@@ -22,6 +23,7 @@ export default [{
 function createPlugins () {
   return [
     typescript({
+      useTsconfigDeclarationDir: true,
       clean: true,
     }),
     json(),
@@ -31,7 +33,7 @@ function createPlugins () {
       main: true,
     }),
     globals(),
-    builtins(),
+    // builtins(),
     commonjs({
       include: [
         'node_modules/**',

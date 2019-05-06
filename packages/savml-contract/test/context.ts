@@ -99,7 +99,10 @@ test('vue route writer should work', async t => {
 	let ctx : ContractContext = await ctxLoader.fetch("com.savml.mem")
 	
 	let writer = new ContractWriter()
-	writer.addWriter(VueRouteWriter)
+	writer.addWriter(VueRouteWriter, {
+		ts: true,
+		filePath: __dirname + '/fixtures/output/'
+	})
 
 	let res = await writer.flush(ctx)
 	t.is(res.length > 0, true)

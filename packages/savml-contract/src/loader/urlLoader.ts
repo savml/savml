@@ -1,5 +1,4 @@
-import { Loader } from '../contract/loader'
-import { Contract } from '../contract/contract'
+import { Contract, Loader } from '../contract/contract'
 import { parse } from './parser'
 import fetch from 'node-fetch'
 

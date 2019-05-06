@@ -1,5 +1,4 @@
-import { Loader } from '../contract/loader'
-import { Contract, ContractContext, Dependencies } from '../contract/contract'
+import { Contract, ContractContext, Dependencies, Loader } from '../contract/contract'
 import { TContractContext } from './contractContext';
 
 interface LoaderContext {

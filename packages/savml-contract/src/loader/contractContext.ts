@@ -31,6 +31,17 @@ export class TContractContext implements ContractContext {
             }
         })
     }
+    getPages() : Page[] {
+        let pages = <Pages>this.contract.pages
+        return Object.keys(pages).map(pageKey => pages[pageKey])
+    }
+    getPageViews(page: Page) : View[] {
+        if (page && page.views) {
+            let views = <Views>page.views
+            return Object.keys(views).map(key => views[key])
+        }
+        return []
+    }
     walkPages (walker: (page: Page, ctx: ContractContext) => any) : any[] {
         let res : any[] = []
         if (!walker) {

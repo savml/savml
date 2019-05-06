@@ -1,5 +1,4 @@
-import { Writer } from "../contract/writer";
-import { ContractContext } from "../contract/contract";
+import { ContractContext, Writer } from "../contract/contract";
 
 interface WriterContext {
   writer: Writer,

@@ -127,6 +127,15 @@ export interface Contract {
 export interface ContractContext {
   contract: Contract
   deps: Array<ContractContext>
+  getPages() : Page[];
+  getPageViews(page: Page) : View[];
   walkPages (walker: (page: Page, ctx: ContractContext) => any) : any[];
   walkViews (walker: (view: View, page: Page, ctx: ContractContext) => any) : any[];
 }
+
+export interface Loader {
+  resolve(packageName: string, version?:string) : Promise<string>;
+  fetch(url: string, options?: object) : Promise<Contract>;
+}
+
+export type Writer = (ctx: ContractContext, opts: object) => Promise<any>

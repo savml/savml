@@ -1,9 +1,8 @@
-import { Loader } from '../contract/loader'
-import { Contract } from '../contract/contract'
-const path = require('path')
-const fs = require('fs')
-// import path from 'path'
-// import fs from 'fs'
+import { Contract, Loader } from '../contract/contract'
+// const path = require('path')
+// const fs = require('fs')
+import {join, extname} from 'path'
+import {access, readFile} from 'fs'
 import { parse } from './parser'
 import { mapExt } from '../utils/util'
 
@@ -27,7 +26,7 @@ export class FileLoader implements Loader {
         absoultePath = packageName
       }
       if (absoultePath) {
-        fs.access(absoultePath, (err: any) => {
+        access(absoultePath, (err: any) => {
           if (err) {
             return reject(err)
           }
@@ -36,7 +35,7 @@ export class FileLoader implements Loader {
       } else {
         let paths: Array<string> = this.paths.slice(0)
         paths.unshift('.')
-        let guessFormat = !mapExt(path.extname(packageName))
+        let guessFormat = !mapExt(extname(packageName))
         return paths.reduce((ret, dir) => { // 目录递归
           return ret.then(val => {
             if (val) {
@@ -44,11 +43,11 @@ export class FileLoader implements Loader {
             }
             let absoultePaths:Array<string> = []
             if (guessFormat) {
-              absoultePaths.push(path.join(dir, packageName + '.json'))
-              absoultePaths.push(path.join(dir, packageName + '.yml'))
-              absoultePaths.push(path.join(dir, packageName + '.yaml'))
+              absoultePaths.push(join(dir, packageName + '.json'))
+              absoultePaths.push(join(dir, packageName + '.yml'))
+              absoultePaths.push(join(dir, packageName + '.yaml'))
             } else {
-              absoultePaths.push(path.join(dir, packageName))
+              absoultePaths.push(join(dir, packageName))
             }
             return absoultePaths.reduce((res, file) => { // 文件递归
               return res.then(val2 => {
@@ -56,7 +55,7 @@ export class FileLoader implements Loader {
                   return val2
                 }
                 return new Promise<string>((resolve) => {
-                  fs.access(file, (err: any) => resolve(err ? '' : file))
+                  access(file, (err: any) => resolve(err ? '' : file))
                 })
               })
             }, Promise.resolve(''))
@@ -67,11 +66,11 @@ export class FileLoader implements Loader {
   }
   fetch (url: string, _?: object): Promise<Contract> {
     return new Promise((resolve, reject) => {
-      let ext = mapExt(path.extname(url))
+      let ext = mapExt(extname(url))
       if (!ext) {
         return reject(new Error(`unknown file type: ${url}`))
       }
-      fs.readFile(url, (err: any, data: Buffer) => {
+      readFile(url, (err: any, data: Buffer) => {
         if (err) {
           return reject(err)
         }

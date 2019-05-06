@@ -12,7 +12,7 @@ dependencies: # 包依赖 (使用其他包的资源)
     version: 0.1
     name: accountb # 别名
 
-enums: # 枚举定义
+structs: # 数据定义
   - name: Sex
     title: 性别
     description: 用户性别只能是男或女?
@@ -23,8 +23,6 @@ enums: # 枚举定义
     - key: female
       value: 2
       title: 女
-
-structs: # 数据定义
   - name: UserInfo
     title: 用户信息
     fields: # 属性列表
@@ -71,16 +69,14 @@ services: # 服务定义
   - name: Auth
     title: 授权服务
     method: POST # 默认的请求方法
-
-actions: # 服务定义
-  - name: Login
-    module: Account
-    auth: false
-    title: 登录
-    method: POST
-    path: account/:login
-    request: LoginRequest
-    response: accountb.LoginResponse
+    - actions: # 服务定义
+      - name: Login
+        auth: false
+        title: 登录
+        method: POST
+        path: account/:login
+        request: LoginRequest
+        response: accountb.LoginResponse
 
 pages: # 定义页面
   - name: Home

@@ -2,11 +2,16 @@
   "name": "savml-contract",
   "version": "0.0.1",
   "description": "the contract for savml",
-  "main": "index.js",
+  "main": "dist/foo.js",
+  "umd:main": "dist/foo.umd.js",
+  "module": "dist/foo.mjs",
+  "source": "src/index.ts",
+  "types": "dist/foo.d.ts",
   "scripts": {
     "t": "npm run lint && npm run build && npm run test",
     "lint": "standard src/** test/**",
     "build": "rollup -c script/build.js",
+    "mb": "microbundle",
     "test": "nyc ava-ts"
   },
   "standard": {
@@ -53,12 +58,18 @@
     ]
   },
   "devDependencies": {
+    "@types/fs-extra": "^5.0.5",
+    "@types/json5": "0.0.30",
     "@types/node": "^10.12.2",
     "@types/node-fetch": "^2.1.2",
+    "@types/vue": "^2.0.0",
     "@types/yaml": "^1.0.2",
     "ava": "^1.2.1",
     "ava-ts": "^0.25.2",
     "chai": "^4.2.0",
+    "fs-extra": "^7.0.1",
+    "json5": "^2.1.0",
+    "microbundle": "^0.11.0",
     "node-fetch": "^2.2.1",
     "npm-run-all": "^4.1.5",
     "nyc": "^13.3.0",
@@ -68,7 +79,8 @@
     "tdash": "^1.0.6",
     "ts-node": "^8.0.2",
     "typescript": "^3.3.3333",
-    "yaml": "^1.5.0"
+    "vue-property-decorator": "^8.1.0",
+    "yaml": "^1.5.1"
   },
   "repository": {
     "type": "git",
