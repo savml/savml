@@ -2,15 +2,17 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "tsc -b packages/savml-core packages/savml-cli",
+    "build": "tsc -b packages/savml-contract packages/savml-core packages/savml-cli",
     "test": "lerna run test",
     "clean": "rimraf packages/**/lib"
   },
   "devDependencies": {
     "@types/node": "^8.0.28",
-    "ava": "^0.22.0",
+    "ava": "^1.4.1",
+    "ava-ts": "^0.25.2",
     "lerna": "^2.9.0",
     "rimraf": "^2.6.2",
+    "ts-node": "^8.1.0",
     "typescript": "~3.0.0"
   },
   "workspaces": [

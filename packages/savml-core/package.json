@@ -5,11 +5,16 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
+    "test": "ava-ts"
   },
   "keywords": [],
   "author": "jetiny",
   "license": "MIT",
   "devDependencies": {
-    "@savml/contract": "^0.0.1"
+    "@savml/contract": "^0.0.1",
+    "@types/node-fetch": "^2.3.3",
+    "@types/yaml": "^1.0.2",
+    "node-fetch": "^2.5.0",
+    "yaml": "^1.5.1"
   }
 }
