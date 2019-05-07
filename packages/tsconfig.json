@@ -1,0 +1,8 @@
+{
+    "files": [],
+    "references": [
+        { "path": "savml-cli" },
+        { "path": "savml-contract" },
+        { "path": "savml-core" }
+    ]
+}

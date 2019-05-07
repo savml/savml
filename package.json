@@ -1,22 +1,19 @@
 {
-  "name": "savml",
-  "version": "2.0.6",
-  "description": "savml library",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/savml/savml.git"
-  },
+  "private": true,
   "scripts": {
-    "sync": "node build.js sync"
+    "bootstrap": "lerna bootstrap",
+    "build": "tsc -b packages/savml-core packages/savml-cli",
+    "test": "lerna run test",
+    "clean": "rimraf packages/**/lib"
   },
-  "author": {
-    "name": "jetiny",
-    "email": "86287344@qq.com"
+  "devDependencies": {
+    "@types/node": "^8.0.28",
+    "ava": "^0.22.0",
+    "lerna": "^2.9.0",
+    "rimraf": "^2.6.2",
+    "typescript": "~3.0.0"
   },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/savml/savml/issues"
-  },
-  "homepage": "https://github.com/savml/savml#readme",
-  "devDependencies": {}
+  "workspaces": [
+    "packages/*"
+  ]
 }
