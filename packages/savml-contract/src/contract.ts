@@ -364,7 +364,11 @@ export interface Contract {
 /**
  * 带依赖的合约上下文
  */
-export interface ContractContext {
+export interface Context {
+  /**
+   * 合约提供者, 用于处理器做中间转换依据
+   */
+  privider: string
   /**
    * 当前合约
    */
@@ -372,20 +376,20 @@ export interface ContractContext {
   /**
    * 依赖的合约
    */
-  deps: Array<ContractContext>
+  deps: Array<Context>
 }
 
 /**
  * 合约加载器工厂
  */
-export interface ContractContextFactory {
+export interface Factory {
   /**
    * 加载合约上下文
    * @param packageName 合约包名
    * @param version 合约版本
    * @param options 加载选择
    */
-  fetch(packageName: string, version?:string, options?: object) : Promise<ContractContext>;
+  fetch(packageName: string, version?:string, options?: object) : Promise<Context>;
   /**
    * 
    * @param loader 加载器

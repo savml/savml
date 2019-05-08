@@ -1,7 +1,7 @@
-import {Contract, ContractContext, Pages, Views, Page, View} from '@savml/contract'
+import {Contract, Context, Pages, Views, Page, View} from '@savml/contract'
 
-export class TContractContext implements ContractContext {
-    constructor(public contract: Contract, public deps: Array<ContractContext>) {
+export class TContext implements Context {
+    constructor(public contract: Contract, public deps: Array<Context>) {
         this.updateName(['pages', 'services', 'validators', 'structs', 'dependencies'], this.contract)
         this.updateChildName(['views'], this.contract.pages)
         this.updateChildName(['actions'], this.contract.services)
@@ -42,7 +42,7 @@ export class TContractContext implements ContractContext {
         }
         return []
     }
-    walkPages (walker: (page: Page, ctx: ContractContext) => any) : any[] {
+    walkPages (walker: (page: Page, ctx: Context) => any) : any[] {
         let res : any[] = []
         if (!walker) {
             return res
@@ -50,12 +50,12 @@ export class TContractContext implements ContractContext {
         let pages = <Pages>this.contract.pages
         if (pages) {
             Object.keys(pages).forEach(pageKey => {
-                res.push(walker(pages[pageKey], <ContractContext>this))
+                res.push(walker(pages[pageKey], <Context>this))
             })
         }
         return res
     }
-    walkViews (walker: (view: View, page: Page, ctx: ContractContext) => any) : any[] {
+    walkViews (walker: (view: View, page: Page, ctx: Context) => any) : any[] {
         let res : any[] = []
         if (!walker) {
             return res
@@ -67,7 +67,7 @@ export class TContractContext implements ContractContext {
                 let views = <Views>page.views
                 if (views) {
                     Object.keys(views).forEach(viewKey => {
-                        res.push(walker(views[viewKey], page,  <ContractContext>this))
+                        res.push(walker(views[viewKey], page,  <Context>this))
                     })
                 }
             })

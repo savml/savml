@@ -1,14 +1,13 @@
-import { Contract, ContractContext, Dependencies, Loader, ContractContextFactory } from '@savml/contract'
-import { TContractContext } from './contractContext';
+import { Contract, Context, Dependencies, Loader, Factory } from '@savml/contract'
 
 interface LoaderContext {
   loader: Loader,
   options: object | undefined
 }
 
-export class ContractLoader implements ContractContextFactory {
+export class ContractLoader implements Factory {
   private loaders: Array<LoaderContext> = []
-  private contexts: { [key: string]: {[key: string]:ContractContext}; } = {}
+  private contexts: { [key: string]: {[key: string]:Context}; } = {}
   constructor () {
 
   }
@@ -18,7 +17,7 @@ export class ContractLoader implements ContractContextFactory {
       options
     })
   }
-  async fetch (packageName: string, version?: string) : Promise<ContractContext> {
+  async fetch (packageName: string, version?: string) : Promise<Context> {
     let ctxs = this.contexts[packageName]
     if (!ctxs) {
       ctxs = this.contexts[packageName] = {}
@@ -46,7 +45,7 @@ export class ContractLoader implements ContractContextFactory {
       })
     }, Promise.resolve())
     if (contract) {
-      let deps : Array<ContractContext> = []
+      let deps : Array<Context> = []
       let dependencies = contract.dependencies
       if (dependencies) {
         deps = await Promise.all(
@@ -54,7 +53,11 @@ export class ContractLoader implements ContractContextFactory {
             (<Dependencies>dependencies)[name].package, (<Dependencies>dependencies)[name].version))
         )
       }
-      let res : ContractContext = new TContractContext(contract, deps)
+      let res : Context = {
+        provider: '',
+        contract,
+        deps,
+      }
       ctxs[contract.version] = res
       return res
     }
