@@ -1,4 +1,3 @@
-export * from './loader/contractContext'
 export * from './loader/contractLoader'
 export * from './loader/fileLoader'
 export * from './loader/memLoader'

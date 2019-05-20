@@ -53,6 +53,7 @@ export class ContractLoader implements Factory {
             (<Dependencies>dependencies)[name].package, (<Dependencies>dependencies)[name].version))
         )
       }
+      //@TODO provider filter
       let res : Context = {
         provider: '',
         contract,

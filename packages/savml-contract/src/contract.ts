@@ -368,7 +368,7 @@ export interface Context {
   /**
    * 合约提供者, 用于处理器做中间转换依据
    */
-  privider: string
+  provider: string
   /**
    * 当前合约
    */

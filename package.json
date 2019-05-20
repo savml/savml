@@ -3,7 +3,9 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "tsc -b packages/savml-contract packages/savml-core packages/savml-cli",
+    "build:c": "tsc -b packages/savml-contract",
     "test": "lerna run test",
+    "t": "ts-node ./t",
     "clean": "rimraf packages/**/lib"
   },
   "devDependencies": {
