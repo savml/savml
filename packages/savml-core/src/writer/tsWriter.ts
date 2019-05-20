@@ -1,17 +1,30 @@
-import {Context, Service, Services, Actions, Action} from '@savml/contract'
+import {Context, Service, Services, Actions, Action, Structs, Dependencies} from '@savml/contract'
 
 export class TsWriter {
   create(ctx: Context) {
-    const {services} = ctx.contract
+    const {dependencies, services, structs} = ctx.contract
     const opts = {
       indent: 0
     }
-    if (services) {
-      let arr = this.createServices(services, opts.indent)
-      console.log(arr)
+    let lists = ['']
+    if (dependencies) {
+      let arr = this.createDeps(dependencies, opts.indent)
+      lists.push('// imports', ...arr, '')
     }
+    if (structs) {
+      let arr = this.createStructs(structs, opts.indent)
+      lists.push('// structs', ...arr)
+    }
+    if (services) {
+      let actionStructs = <Structs>{}
+      let arr = this.createServices(services, opts.indent, actionStructs)
+      let actionStructArr = this.createStructs(actionStructs, opts.indent)
+      lists.push('// buildin structs', ...actionStructArr)
+      lists.push('// services', ...arr)
+    }
+    console.log(lists.join('\n'))
   }
-  createServices(services: Services, indent : number) : string[] {
+  createServices(services: Services, indent : number, structs: Structs) : string[] {
     let res : string[] = []
     for(let serviceName in services) {
       let service : Service = services[serviceName]
@@ -20,28 +33,108 @@ export class TsWriter {
       }
       //@TODO add comments
       let arr = [
+        '/**',
+        ` * ${serviceName}`,
+        service.description ? ` * ${service.description}` : '',
+        ' */',
         `export interface ${serviceName} {`
-      ]
+      ].filter(it => !!it)
       if (service.actions) {
-        arr.push(...this.createActions(service.actions, 1))
+        arr.push(...this.createActions(service.actions, 1, serviceName, structs))
       }
       arr.push('}')
-      res.push(...arr)
+      res.push(...arr, '')
     }
     return indentArr(indent, res)
   }
-  createActions(actions: Actions, indent: number) : string[]{
+  createActions(actions: Actions, indent: number, serviceName: string, structs: Structs) : string[]{
     let res : string[] = []
     for (let actionName in actions) {
       let action : Action = actions[actionName]
       if (action.name){
         actionName = action.name
       }
+      let {request, response} = action
+      let requestName : string = ''
+      if (typeof request === 'string') {
+        requestName = request
+      } else if (typeof request === 'object' && request != null) {
+        structs[requestName = `${serviceName}${actionName}Request`] = request
+      }
+      let responseName : string = ''
+      if (typeof response === 'string') {
+        responseName = response
+      } else if (typeof response === 'object' && response != null) {
+        structs[responseName = `${serviceName}${actionName}Response`] = response
+      }
+      let input = requestName ? `input: ${requestName}` : ''
+      let outputType = responseName
+      let text = `${actionName}(${input}): Promise<${outputType || 'void'}>;`
       //@TODO add comments
-      let request = action.request ? `input: ${action.request}` : ''
-      let response = action.response || 'void'
-      let text = `${actionName}(${request}):Promise<${response}>;`
+      let comments = [
+        '/**',
+        ` * ${actionName}`,
+        action.description ? ` * ${action.description}` : '',
+        requestName ?     ` * @param input ${requestName}` : '',
+        responseName?     ` * @return ${responseName}` : '',
+        ' */',
+      ]
+      comments = comments.filter(it => !!it)
+      res.push(...comments)
       res.push(text)
+    }
+    return indentArr(indent, res)
+  }
+  createStructs(structs: Structs, indent : number) : string[] {
+    let res: string[] = []
+    for (let structName in structs) {
+      let struct = structs[structName]
+      let arr : string[] = [
+        '/**',
+        ` * ${structName}`,
+        struct.description ? ` * ${struct.description}` : '',
+        ' */',
+      ]
+      if (struct.enums) {
+        arr.push(`export enum ${structName} {`)
+        let enums : string[] = struct.enums.reduce((arr : string[], it) => {
+          let ret = [
+            '/**',
+            ` * ${structName}.${it.key} ${it.title || ''}`,
+            it.description ? ` * ${it.description}` : '',
+            ' */',
+            `${it.key} = ${toEnumValue(it.value)}`,
+          ]
+          arr.push(...indentArr(1, ret.filter(it => !!it)))
+          return arr
+        }, [])
+        arr.push(...enums)
+      } else if (struct.fields) {
+        arr.push(`export interface ${structName} {`)
+        let fields : string[] = struct.fields.reduce((arr : string[], it) => {
+          let ret = [
+            '/**',
+            ` * ${it.name} ${it.title || ''}`,
+            it.description ? ` * ${it.description}` : '',
+            ' */',
+            `${it.name} ${it.optional ? '?': ''}: ${toFieldType(it.type || 'string')};`,
+          ]
+          arr.push(...indentArr(1, ret.filter(it => !!it)))
+          return arr
+        }, [])
+        arr.push(...fields)
+      } else {
+        throw new Error('unknown struct')
+      }
+      arr.push('}')
+      res.push(...arr.filter(it => !!it), '')
+    }
+    return indentArr(indent, res)
+  }
+  createDeps(deps: Dependencies, indent: number) : string[] {
+    let res: string[] = []
+    for (let depName in deps) {
+      res.push(`import * as ${depName} from '${deps[depName].package}'`)
     }
     return indentArr(indent, res)
   }
@@ -49,6 +142,25 @@ export class TsWriter {
 
 export function indentArr(indent: number, arr: string[]) {
   return arr.map(it => '  '.repeat(indent) + it)
+}
+
+function toEnumValue(value: any) {
+  if (typeof value === 'string') {
+    return `'${value}'`
+  }
+  return value
+}
+
+function toFieldType(value: string) {
+  return value
+}
+
+export enum Sex {
+  /**
+   * Sex.male 女性
+   */
+  Male = 0,
+  Femail = 1
 }
 
 /**

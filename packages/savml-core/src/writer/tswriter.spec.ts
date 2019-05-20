@@ -27,20 +27,60 @@ test('tswriter should create project d.ts', async t => {
 		}
 		services = {
 			Auth: <Service>{
+				description: '认证服务',
 				method: Method.GET,
 				actions: {
 					Login: <Action>{
+						description: '用户登陆',
+						request: 'user.LoginInput',
             response: 'UserInfo'
-          },
+					},
+				  Signup: {
+						request: 'SignupInput',
+						response: <Struct> {
+							title: '登陆结果',
+							fields: <Field[]>[
+								{
+									name: 'userId',
+									type: 'number',
+									title: '用户ID',
+									description: '用户身份唯一标记'
+								},
+								{
+									name: 'sexs',
+									type: 'Sex[]',
+								}
+							]
+						}
+					}
 				}
 			}
 		}
 		structs = {
+			Sex: <Struct> {
+				title: '性别',
+				description: '动物性别',
+				enums: [
+					{
+						key: 'Male',
+						value: 0,
+						title: '男',
+					},
+					{
+						key: 'Female',
+						value: '1',
+						title: '女',
+						description: '磁性动物'
+					}
+				]
+			},
 			UserInfo: <Struct>{
-				fields: <[Field]>[
+				title: '用户信息',
+				fields: <Field[]>[
 					{
 						name: "email",
-						validators: <[Validator]>[
+						type: 'boolean',
+						validators: <Validator[]>[
 							{ name: "isEmail", error: "不是邮箱格式"}
 						],
 					}
