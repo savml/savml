@@ -1,7 +1,7 @@
 import {Context, Service, Services, Actions, Action, Structs, Dependencies} from '@savml/contract'
 
 export class TsWriter {
-  create(ctx: Context) {
+  createInterface(ctx: Context) : string {
     const {dependencies, services, structs} = ctx.contract
     const opts = {
       indent: 0
@@ -11,9 +11,11 @@ export class TsWriter {
       let arr = this.createDeps(dependencies, opts.indent)
       lists.push('// imports', ...arr, '')
     }
+    let structsKeys : string[] = []
     if (structs) {
       let arr = this.createStructs(structs, opts.indent)
       lists.push('// structs', ...arr)
+      structsKeys.push(...Object.keys(structs))
     }
     if (services) {
       let actionStructs = <Structs>{}
@@ -21,11 +23,22 @@ export class TsWriter {
       let actionStructArr = this.createStructs(actionStructs, opts.indent)
       lists.push('// buildin structs', ...actionStructArr)
       lists.push('// services', ...arr)
+      structsKeys.push(...Object.keys(actionStructs))
     }
-    console.log(lists.join('\n'))
+    //lists.push(...this.createStructsFactory(structsKeys, opts.indent))
+    return lists.join('\n')
+  }
+  createStructsFactory(keys: string[], indent: number) {
+    let names : string[] = [`export interface StructsMaker {`]
+    names.push(...keys.map(it => {
+      return `  ${it}(input ?: ${it}|any): ${it};`
+    }))
+    names.push(`}`, '')
+    return indentArr(indent, names)
   }
   createServices(services: Services, indent : number, structs: Structs) : string[] {
     let res : string[] = []
+    let names : string[] = [`export interface ServicesHandler {`]
     for(let serviceName in services) {
       let service : Service = services[serviceName]
       if (service.name){
@@ -44,10 +57,12 @@ export class TsWriter {
       }
       arr.push('}')
       res.push(...arr, '')
+      names.push(`  ${serviceName}: ${serviceName}`)
     }
-    return indentArr(indent, res)
+    names.push('}', '')
+    return indentArr(indent, res.concat(names))
   }
-  createActions(actions: Actions, indent: number, serviceName: string, structs: Structs) : string[]{
+  createActions(actions: Actions, indent: number, serviceName: string, structs: Structs) : string[]{ 
     let res : string[] = []
     for (let actionName in actions) {
       let action : Action = actions[actionName]
@@ -103,7 +118,7 @@ export class TsWriter {
             ` * ${structName}.${it.key} ${it.title || ''}`,
             it.description ? ` * ${it.description}` : '',
             ' */',
-            `${it.key} = ${toEnumValue(it.value)}`,
+            `${it.key} = ${toEnumValue(it.value)},`,
           ]
           arr.push(...indentArr(1, ret.filter(it => !!it)))
           return arr
@@ -154,42 +169,3 @@ function toEnumValue(value: any) {
 function toFieldType(value: string) {
   return value
 }
-
-export enum Sex {
-  /**
-   * Sex.male 女性
-   */
-  Male = 0,
-  Femail = 1
-}
-
-/**
-
-export default {
-  project...
-  contracts: {
-
-  },
-  services: {
-    UserService
-  }
-}
-
-// 
-export interface UserInput {
-  id: string
-}
-
-// 
-export interface UserOutput {
-  id: string
-  name: string
-}
-
-export interface UserService {
-  login(input: LoginInput): Promise<LoginResult>
-  getUserName(input: UserInput): Promise<UserOutput>
-}
-
-*/
-
